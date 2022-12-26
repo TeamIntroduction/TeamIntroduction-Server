@@ -19,6 +19,12 @@ public class Member {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    private Department department;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Team team;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private Part part;
 
     @Column(nullable = false)
