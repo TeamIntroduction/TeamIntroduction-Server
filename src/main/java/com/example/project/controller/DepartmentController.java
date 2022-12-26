@@ -1,7 +1,7 @@
 package com.example.project.controller;
 
 import com.example.project.dto.ResponseDto;
-import com.example.project.service.PartService;
+import com.example.project.service.DepartmentService;
 import com.example.project.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/parts")
-public class PartController {
+@RequestMapping("/departments")
+public class DepartmentController {
 
-    private final PartService partService;
+    private final DepartmentService departmentService;
 
     @GetMapping()
-    public ResponseDto getParts() {
+    public ResponseDto getDepartments() {
 
-        return ResponseUtil.SUCCESS("파트 리스트 조회 완료", partService.getParts());
+        return ResponseUtil.SUCCESS("부서 리스트 조회 완료", departmentService.getDepartments());
     }
 }

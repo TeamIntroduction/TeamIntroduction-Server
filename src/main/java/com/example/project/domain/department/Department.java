@@ -1,9 +1,11 @@
-package com.example.project.domain;
+package com.example.project.domain.department;
 
+import com.example.project.domain.team.Team;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,6 +21,6 @@ public class Department {
     @Enumerated(EnumType.STRING)
     private DepartmentName name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Team team;
+    @OneToMany(mappedBy = "department")
+    private List<Team> team;
 }

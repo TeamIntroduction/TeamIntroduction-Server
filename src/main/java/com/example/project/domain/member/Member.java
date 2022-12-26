@@ -1,5 +1,8 @@
-package com.example.project.domain;
+package com.example.project.domain.member;
 
+import com.example.project.domain.department.Department;
+import com.example.project.domain.part.Part;
+import com.example.project.domain.team.Team;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

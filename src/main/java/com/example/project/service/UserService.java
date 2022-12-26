@@ -1,6 +1,6 @@
 package com.example.project.service;
 
-import com.example.project.domain.User;
+import com.example.project.domain.user.User;
 import com.example.project.dto.LoginReqDto;
 import com.example.project.exception.InvalidException;
 import com.example.project.repository.UserRepository;

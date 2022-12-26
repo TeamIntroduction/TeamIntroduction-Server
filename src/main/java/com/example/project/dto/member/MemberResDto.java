@@ -1,7 +1,7 @@
 package com.example.project.dto.member;
 
-import com.example.project.domain.Member;
-import com.example.project.domain.Position;
+import com.example.project.domain.member.Member;
+import com.example.project.domain.member.Position;
 import com.example.project.dto.part.PartResDto;
 import lombok.Data;
 

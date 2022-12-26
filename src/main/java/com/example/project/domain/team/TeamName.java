@@ -1,4 +1,4 @@
-package com.example.project.domain;
+package com.example.project.domain.team;
 
 public enum TeamName {
 
