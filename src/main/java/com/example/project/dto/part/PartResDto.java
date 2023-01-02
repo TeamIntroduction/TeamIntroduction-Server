@@ -1,17 +1,15 @@
 package com.example.project.dto.part;
 
-import com.example.project.domain.part.Part;
-import com.example.project.domain.part.PartName;
+import com.example.project.domain.team.Team;
 import lombok.Data;
 
 @Data
 public class PartResDto {
     private Long id;
-    private PartName name;
+    private String name;
 
-
-    public PartResDto(Part part) {
-        this.id = part.getId();
-        this.name = part.getName();
+    public PartResDto(Team team) {
+        this.id = team.getId();
+        this.name = team.getName();
     }
 }

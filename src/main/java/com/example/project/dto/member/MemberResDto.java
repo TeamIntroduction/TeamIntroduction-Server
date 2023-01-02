@@ -2,26 +2,24 @@ package com.example.project.dto.member;
 
 import com.example.project.domain.member.Member;
 import com.example.project.domain.member.Position;
-import com.example.project.dto.part.PartResDto;
+
 import lombok.Data;
 
 @Data
 public class MemberResDto {
     private Long id;
     private String name;
-    private PartResDto part;
+    private String partName;
     private Position position;
     private String phoneNumber;
     private String email;
-    private String photo;
 
     public MemberResDto(Member member) {
         this.id = member.getId();
         this.name = member.getName();
-        this.part = new PartResDto(member.getPart());
+        this.partName = member.getTeam().getName();
         this.position = member.getPosition();
         this.phoneNumber = member.getPhoneNumber();
         this.email = member.getEmail();
-        this.photo = member.getPhoto();
     }
 }

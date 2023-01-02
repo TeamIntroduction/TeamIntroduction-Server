@@ -1,11 +1,11 @@
 package com.example.project.domain.team;
 
-import com.example.project.domain.department.Department;
-import com.example.project.domain.part.Part;
+import com.example.project.domain.member.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,13 +19,25 @@ public class Team {
     private Long id;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private TeamName name;
+    private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id")
-    private Department department;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Type type;
 
     @OneToMany(mappedBy = "team")
-    private List<Part> part;
+    private List<Member> members = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Team parent;
+
+    @OneToMany(mappedBy = "parent")
+    private List<Team> children = new ArrayList<>();
+
+    /* 연관관계 메소드 */
+    public void addParent(Team parent) {
+        this.parent = parent;
+        parent.getChildren().add(this);
+    }
 }

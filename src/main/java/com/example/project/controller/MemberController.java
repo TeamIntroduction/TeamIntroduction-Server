@@ -14,9 +14,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping()
-    public ResponseDto getMemberList(@RequestParam Long partId) {
+    public ResponseDto getMemberList(@RequestParam Long teamId) {
 
-        return ResponseUtil.SUCCESS("멤버 리스트 조회 완료", memberService.getMemberList(partId));
+        return ResponseUtil.SUCCESS("멤버 리스트 조회 완료", memberService.getMemberList(teamId));
     }
 
     @GetMapping("/{memberId}")

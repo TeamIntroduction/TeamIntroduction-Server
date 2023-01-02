@@ -18,9 +18,9 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public List<MemberListResDto> getMemberList(Long partId) {
+    public List<MemberListResDto> getMemberList(Long teamId) {
 
-        return memberRepository.findByPartId(partId).stream()
+        return memberRepository.findByTeamId(teamId).stream()
                 .map(m -> new MemberListResDto(m))
                 .collect(Collectors.toList());
     }

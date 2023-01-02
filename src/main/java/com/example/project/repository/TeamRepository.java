@@ -1,18 +1,20 @@
 package com.example.project.repository;
 
 import com.example.project.domain.member.Member;
+import com.example.project.domain.team.Team;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface TeamRepository extends JpaRepository<Team, Long> {
 
-    @Query("SELECT m FROM Member m WHERE m.team.id=:teamId")
-    List<Member> findByTeamId(@Param("teamId") Long teamId);
+    @EntityGraph(attributePaths = {"children"})
+    @Query("SELECT t FROM Team t WHERE t.parent.id is null")
+    List<Team> findTopTeam();
 
-    Optional<Member> findById(@Param("memberId") Long memberId);
+    @Query("SELECT t FROM Team t WHERE t.type = '파트'")
+    List<Team> findParts();
 }
