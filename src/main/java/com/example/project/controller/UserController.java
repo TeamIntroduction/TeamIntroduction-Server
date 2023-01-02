@@ -9,6 +9,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -16,9 +25,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseDto login(@RequestBody LoginReqDto request) {
+    public ResponseDto login(HttpSession session, @RequestBody LoginReqDto request) throws Exception {
 
-        userService.login(request);
+        userService.login(session, request);
 
         return ResponseUtil.SUCCESS("로그인 완료", null);
     }
