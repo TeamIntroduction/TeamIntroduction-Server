@@ -16,9 +16,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping()
-    public ResponseDto getMemberList(@RequestParam Long teamId) {
+    public ResponseDto getMemberList(HttpSession session, @RequestParam String teamId) throws Exception {
 
-        return ResponseUtil.SUCCESS("멤버 리스트 조회 완료", memberService.getMemberList(teamId));
+        return ResponseUtil.SUCCESS("멤버 리스트 조회 완료", memberService.getMemberList(session, teamId));
     }
 
     @GetMapping("/{encryptedMemberId}")

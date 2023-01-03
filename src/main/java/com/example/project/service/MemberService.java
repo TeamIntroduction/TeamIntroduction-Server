@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
-import java.net.URLDecoder;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,17 +20,25 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public List<MemberListResDto> getMemberList(Long teamId) {
+    public List<MemberListResDto> getMemberList(HttpSession session, String encryptedTeamId) throws Exception {
+
+        String symmetricKey = (String)session.getAttribute("SYMMETRIC_KEY");
+        Long teamId = Long.parseLong(AES.decrypt(symmetricKey, encryptedTeamId));
 
         return memberRepository.findByTeamId(teamId).stream()
-                .map(m -> new MemberListResDto(m))
+                .map(m -> {
+                    try {
+                        return new MemberListResDto(symmetricKey, m);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .collect(Collectors.toList());
     }
 
     public MemberResDto getMember(HttpSession session, String encryptedMemberId) throws Exception {
 
         String symmetricKey = (String)session.getAttribute("SYMMETRIC_KEY");
-
         Long memberId = Long.parseLong(AES.decrypt(symmetricKey, encryptedMemberId));
 
         return new MemberResDto(memberRepository.findById(memberId)
