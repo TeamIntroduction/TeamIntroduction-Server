@@ -1,6 +1,5 @@
 package com.example.project.service;
 
-import com.example.project.dto.part.PartResDto;
 import com.example.project.dto.team.TeamResDto;
 import com.example.project.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +20,6 @@ public class TeamService {
 
         return teamRepository.findTopTeam().stream()
                 .map(t -> new TeamResDto(t))
-                .collect(Collectors.toList());
-    }
-
-    public List<PartResDto> getParts() {
-
-        return teamRepository.findParts().stream()
-                .map(t -> new PartResDto(t))
                 .collect(Collectors.toList());
     }
 }

@@ -14,7 +14,4 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     @EntityGraph(attributePaths = {"children"})
     @Query("SELECT t FROM Team t WHERE t.parent.id is null")
     List<Team> findTopTeam();
-
-    @Query("SELECT t FROM Team t WHERE t.type = '파트'")
-    List<Team> findParts();
 }

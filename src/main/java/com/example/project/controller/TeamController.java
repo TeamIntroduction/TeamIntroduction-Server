@@ -20,11 +20,4 @@ public class TeamController {
 
         return ResponseUtil.SUCCESS("부서 리스트 조회 완료", teamService.getTeams());
     }
-
-    @GetMapping("/parts")
-    public ResponseDto getParts() {
-
-        return ResponseUtil.SUCCESS("파트 리스트 조회 완료", teamService.getParts());
-    }
-
 }
