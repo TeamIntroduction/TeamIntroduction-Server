@@ -14,5 +14,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("SELECT m FROM Member m WHERE m.team.id=:teamId")
     List<Member> findByTeamId(@Param("teamId") Long teamId);
 
+    @EntityGraph(attributePaths = {"team"})
     Optional<Member> findById(@Param("memberId") Long memberId);
 }
