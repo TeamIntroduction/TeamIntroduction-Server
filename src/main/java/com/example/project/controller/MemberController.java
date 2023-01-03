@@ -6,6 +6,8 @@ import com.example.project.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/members")
@@ -19,9 +21,9 @@ public class MemberController {
         return ResponseUtil.SUCCESS("멤버 리스트 조회 완료", memberService.getMemberList(teamId));
     }
 
-    @GetMapping("/{memberId}")
-    public ResponseDto getMember(@PathVariable Long memberId) {
+    @GetMapping("/{encryptedMemberId}")
+    public ResponseDto getMember(HttpSession session, @PathVariable String encryptedMemberId) throws Exception {
 
-        return ResponseUtil.SUCCESS("멤버 조회 완료", memberService.getMember(memberId));
+        return ResponseUtil.SUCCESS("멤버 조회 완료", memberService.getMember(session, encryptedMemberId));
     }
 }
