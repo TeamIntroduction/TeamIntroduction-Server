@@ -36,12 +36,13 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-    public MemberResDto getMember(HttpSession session, String encryptedMemberId) throws Exception {
+    public String getMember(HttpSession session, String encryptedMemberId) throws Exception {
 
         String symmetricKey = (String)session.getAttribute("SYMMETRIC_KEY");
         Long memberId = Long.parseLong(AES.decrypt(symmetricKey, encryptedMemberId));
-
-        return new MemberResDto(memberRepository.findById(memberId)
+        MemberResDto memberResDto = new MemberResDto(memberRepository.findById(memberId)
                 .orElseThrow(() -> new InvalidException("멤버 조회 실패")));
+
+        return AES.encryptObject(symmetricKey, memberResDto);
     }
 }

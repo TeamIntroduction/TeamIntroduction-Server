@@ -1,5 +1,7 @@
 package com.example.project.utils.key;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -8,6 +10,12 @@ import java.util.Base64;
 
 public class AES {
     private final static String alg = "AES/CBC/PKCS5Padding";
+
+    public static String encryptObject(String key, Object data) throws Exception {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        return encrypt(key, objectMapper.writeValueAsString(data));
+    }
 
     public static String encrypt(String key, String text) throws Exception {
 
@@ -31,4 +39,7 @@ public class AES {
 
         return new String(cipher.doFinal(decodedBytes));
     }
+
+
+
 }
