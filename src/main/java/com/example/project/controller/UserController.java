@@ -20,8 +20,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseDto login(HttpSession session, @RequestBody LoginReqDto request) throws Exception {
 
-        userService.login(session, request);
-
-        return ResponseUtil.SUCCESS("로그인 완료", null);
+        return ResponseUtil.SUCCESS("로그인 완료", userService.login(session, request));
     }
 }

@@ -2,10 +2,14 @@ package com.example.project.service;
 
 import com.example.project.domain.user.User;
 import com.example.project.dto.LoginReqDto;
+import com.example.project.dto.token.TokenResDto;
+import com.example.project.dto.user.UserAuthenticationDto;
 import com.example.project.exception.InvalidException;
 import com.example.project.repository.UserRepository;
+import com.example.project.utils.JwtTokenUtil;
 import com.example.project.utils.key.AES;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,16 +23,25 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtTokenUtil jwtTokenUtil;
 
-    public void login(HttpSession session, LoginReqDto request) throws Exception {
+    public TokenResDto login(HttpSession session, LoginReqDto request) throws Exception {
 
+        User user = certify(session, request);
+
+        TokenResDto tokenResDto = jwtTokenUtil.generateToken(user.getId());
+        return tokenResDto;
+    }
+
+    private User certify(HttpSession session, LoginReqDto request) throws Exception {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new InvalidException("로그인 실패"));
 
-        String symmetricKey = (String)session.getAttribute("SYMMETRIC_KEY");
+        String symmetricKey = (String) session.getAttribute("SYMMETRIC_KEY");
 
         String password = AES.decrypt(symmetricKey, request.getPassword());
         checkPassword(password, user);
+        return user;
     }
 
     private void checkPassword(String password, User user) {
