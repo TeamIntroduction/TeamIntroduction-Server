@@ -17,20 +17,21 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 public class KeyService {
 
-    private final static int KEY_SIZE = 2048;
+    private final static String PRIVATE_KEY = "PRIVATE_KEY";
+    private final static String SYMMETRIC_KEY = "SYMMETRIC_KEY";
 
     public HashMap<String, String> generateKey(HttpSession session) throws Exception {
 
         KeyPair keyPair = RSA.generateKey();
-        session.setAttribute("PRIVATE_KEY", keyPair.getPrivate());
+        session.setAttribute(PRIVATE_KEY, keyPair.getPrivate());
         HashMap<String, String> map = createSendingFormatOfPublicKey(keyPair.getPublic());
         return map;
     }
 
     public void storeSymmetricKey(HttpSession session, SymmetricKeyReqDto symmetricKeyReqDto) throws Exception {
 
-        String symmetricKey = RSA.decrypt(symmetricKeyReqDto.getSymmetricKey(), (PrivateKey)session.getAttribute("PRIVATE_KEY"));
-        session.setAttribute("SYMMETRIC_KEY", symmetricKey);
+        String symmetricKey = RSA.decrypt(symmetricKeyReqDto.getSymmetricKey(), (PrivateKey)session.getAttribute(PRIVATE_KEY));
+        session.setAttribute(SYMMETRIC_KEY, symmetricKey);
     }
 
     private static HashMap<String, String> createSendingFormatOfPublicKey(PublicKey publicKey) throws NoSuchAlgorithmException, InvalidKeySpecException {

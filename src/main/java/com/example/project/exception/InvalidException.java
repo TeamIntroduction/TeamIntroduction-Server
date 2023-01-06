@@ -1,8 +1,12 @@
 package com.example.project.exception;
 
-public class InvalidException extends RuntimeException {
+import com.example.project.constant.ErrorResponse;
+import lombok.Getter;
 
-    public InvalidException(String message) {
-        super(message);
+@Getter
+public class InvalidException extends CustomException {
+
+    public InvalidException(ErrorResponse errorResponse) {
+        super(errorResponse.getCode(), errorResponse.getMessage());
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
@@ -24,8 +25,10 @@ public class JwtTokenUtil {
     @Value("${jwt.expiration-ms.access-token}")
     private Long JWT_EXPIRATION_MS;
 
+    private final static String USER_ID = "userId";
+
     public Authentication getAuthentication(String token) {
-        Long userId = extractClaims(token).get("userId", Long.class);
+        Long userId = extractClaims(token).get(USER_ID, Long.class);
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 new UserAuthenticationDto(userId), null, null);
         return authentication;
@@ -33,7 +36,6 @@ public class JwtTokenUtil {
 
     public Claims extractClaims(String token) {
         try {
-            System.out.println("here?");
             return Jwts.parserBuilder()
                     .setSigningKey(getKey())
                     .build()
@@ -47,7 +49,7 @@ public class JwtTokenUtil {
     public TokenResDto generateToken(Long userId) {
 
         Claims claims = Jwts.claims();
-        claims.put("userId", userId);
+        claims.put(USER_ID, userId);
         String accessToken = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis())) // 발행시간
@@ -90,7 +92,7 @@ public class JwtTokenUtil {
     }
 
     // Jwt 토큰 유효성 검사
-    public boolean validateToken(String token) {
+    public boolean validateToken(HttpServletRequest request, String token) {
         try {
             Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token);
             return true;
@@ -100,6 +102,7 @@ public class JwtTokenUtil {
             log.error("Invalid JWT token");
         } catch (ExpiredJwtException ex) {
             log.error("Expired JWT token");
+            //request.setAttribute("exception", EXPIRED_ACCESS_TOKEN.getCode());
         } catch (UnsupportedJwtException ex) {
             log.error("Unsupported JWT token");
         } catch (IllegalArgumentException ex) {

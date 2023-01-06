@@ -1,4 +1,4 @@
-package com.example.project.utils;
+package com.example.project.utils.response;
 
 public enum ResponseStatus {
 

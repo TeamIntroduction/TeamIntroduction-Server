@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 
+import static com.example.project.constant.ErrorResponse.FAIL_LOGIN;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -35,7 +37,7 @@ public class UserService {
 
     private User certify(HttpSession session, LoginReqDto request) throws Exception {
         User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new InvalidException("로그인 실패"));
+                .orElseThrow(() -> new InvalidException(FAIL_LOGIN));
 
         String symmetricKey = (String) session.getAttribute("SYMMETRIC_KEY");
 
@@ -47,7 +49,7 @@ public class UserService {
     private void checkPassword(String password, User user) {
 
         if(!passwordEncoder.matches(password, user.getPassword())) {
-            throw new InvalidException("로그인 실패");
+            throw new InvalidException(FAIL_LOGIN);
         }
     }
 }

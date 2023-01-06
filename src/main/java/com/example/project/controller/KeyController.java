@@ -3,13 +3,18 @@ package com.example.project.controller;
 import com.example.project.dto.ResponseDto;
 import com.example.project.dto.key.SymmetricKeyReqDto;
 import com.example.project.service.KeyService;
-import com.example.project.utils.ResponseUtil;
+
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
+
+import static com.example.project.constant.SuccessResponse.GENERATE_ASYMMETRIC_KEY;
+import static com.example.project.constant.SuccessResponse.STORE_SYMMETRIC_KEY;
 
 @RestController
 @RequiredArgsConstructor()
@@ -19,15 +24,15 @@ public class KeyController {
     private final KeyService keyService;
 
     @PostMapping("/asymmetric-key")
-    public ResponseDto generateKey(HttpSession session) throws Exception {
+    public ResponseEntity<ResponseDto> generateKey(HttpSession session) throws Exception {
 
-        return ResponseUtil.SUCCESS("키 생성 완료", keyService.generateKey(session));
+        return new ResponseEntity<>(new ResponseDto(GENERATE_ASYMMETRIC_KEY, keyService.generateKey(session)), HttpStatus.CREATED);
     }
 
     @PostMapping("/symmetric-key")
-    public ResponseDto storeSymmetricKey(HttpSession session, @RequestBody SymmetricKeyReqDto symmetricKeyReqDto) throws Exception {
+    public ResponseEntity<ResponseDto> storeSymmetricKey(HttpSession session, @RequestBody SymmetricKeyReqDto symmetricKeyReqDto) throws Exception {
 
         keyService.storeSymmetricKey(session, symmetricKeyReqDto);
-        return ResponseUtil.SUCCESS("대칭키 저장 완료", null);
+        return new ResponseEntity<>(new ResponseDto(STORE_SYMMETRIC_KEY, null), HttpStatus.CREATED);
     }
 }
