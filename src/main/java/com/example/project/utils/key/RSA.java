@@ -14,16 +14,17 @@ import java.util.Base64;
 public class RSA {
 
     private static final int KEY_SIZE = 2048;
+    private static final String ALG = "RSA";
 
     public static KeyPair generateKey() throws Exception {
-        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+        KeyPairGenerator generator = KeyPairGenerator.getInstance(ALG);
         generator.initialize(KEY_SIZE);
         return generator.genKeyPair();
     }
 
     public static String encrypt(String message, PublicKey publicKey) throws Exception {
         byte[] messageToBytes = message.getBytes();
-        Cipher cipher = Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance(ALG);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         byte[] encryptedBytes = cipher.doFinal(messageToBytes);
         return encode(encryptedBytes);
@@ -35,7 +36,7 @@ public class RSA {
 
     public static String decrypt(String encryptedMessage, PrivateKey privateKey) throws Exception {
         byte[] encryptedBytes = decode(encryptedMessage);
-        Cipher cipher = Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance(ALG);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         byte[] decryptedMessage = cipher.doFinal(encryptedBytes);
         return new String(decryptedMessage, StandardCharsets.UTF_8);
