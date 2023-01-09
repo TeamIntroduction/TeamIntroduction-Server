@@ -24,6 +24,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<ResponseDto> login(HttpSession session, @RequestBody LoginReqDto request) throws Exception {
 
-        return new ResponseEntity<>(new ResponseDto(LOGIN, userService.login(session, request)), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(LOGIN, userService.login(session, request)), HttpStatus.OK);
     }
 }

@@ -22,12 +22,12 @@ public class MemberController {
     @GetMapping()
     public ResponseEntity<ResponseDto> getMemberList(HttpSession session, @RequestParam String teamId) throws Exception {
 
-        return new ResponseEntity<>(new ResponseDto(GET_MEMBER_LIST, memberService.getMemberList(session, teamId)), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(GET_MEMBER_LIST, memberService.getMemberList(session, teamId)), HttpStatus.OK);
     }
 
     @GetMapping("/{encryptedMemberId}")
     public ResponseEntity<ResponseDto> getMember(HttpSession session, @PathVariable String encryptedMemberId) throws Exception {
 
-        return new ResponseEntity<>(new ResponseDto(GET_MEMBER, memberService.getMember(session, encryptedMemberId)), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(GET_MEMBER, memberService.getMember(session, encryptedMemberId)), HttpStatus.OK);
     }
 }

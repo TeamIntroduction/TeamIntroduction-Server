@@ -1,6 +1,6 @@
 package com.example.project.constant;
 
-import com.example.project.utils.response.ResponseStatus;
+import com.example.project.dto.ResponseStatus;
 import lombok.Getter;
 
 @Getter

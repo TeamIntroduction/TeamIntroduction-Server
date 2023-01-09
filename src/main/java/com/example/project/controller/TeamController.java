@@ -22,6 +22,6 @@ public class TeamController {
     @GetMapping()
     public ResponseEntity<ResponseDto> getTeams() {
 
-        return new ResponseEntity<>(new ResponseDto(GET_TEAMS, teamService.getTeams()), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(GET_TEAMS, teamService.getTeams()), HttpStatus.OK);
     }
 }

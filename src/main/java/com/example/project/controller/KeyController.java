@@ -26,13 +26,13 @@ public class KeyController {
     @PostMapping("/asymmetric-key")
     public ResponseEntity<ResponseDto> generateKey(HttpSession session) throws Exception {
 
-        return new ResponseEntity<>(new ResponseDto(GENERATE_ASYMMETRIC_KEY, keyService.generateKey(session)), HttpStatus.CREATED);
+        return new ResponseEntity<>(ResponseDto.success(GENERATE_ASYMMETRIC_KEY, keyService.generateKey(session)), HttpStatus.CREATED);
     }
 
     @PostMapping("/symmetric-key")
     public ResponseEntity<ResponseDto> storeSymmetricKey(HttpSession session, @RequestBody SymmetricKeyReqDto symmetricKeyReqDto) throws Exception {
 
         keyService.storeSymmetricKey(session, symmetricKeyReqDto);
-        return new ResponseEntity<>(new ResponseDto(STORE_SYMMETRIC_KEY, null), HttpStatus.CREATED);
+        return new ResponseEntity<>(ResponseDto.success(STORE_SYMMETRIC_KEY, null), HttpStatus.CREATED);
     }
 }

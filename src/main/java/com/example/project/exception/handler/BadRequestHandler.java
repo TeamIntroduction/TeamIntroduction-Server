@@ -1,5 +1,6 @@
 package com.example.project.exception.handler;
 
+import com.example.project.constant.ErrorResponse;
 import com.example.project.dto.ResponseDto;
 import com.example.project.exception.CustomException;
 import com.example.project.exception.InvalidException;
@@ -24,7 +25,7 @@ public class BadRequestHandler {
     })
     public ResponseEntity<ResponseDto> handle400Error(Exception exception) {
         log.error("❗❗️ exception = " + exception);
-        return new ResponseEntity<>(new ResponseDto(BAD_REQUEST.getCode(), BAD_REQUEST.getMessage(), null), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ResponseDto.error(BAD_REQUEST, null), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({
@@ -32,6 +33,6 @@ public class BadRequestHandler {
     })
     public ResponseEntity<ResponseDto> handleCustom400Error(CustomException exception) {
         log.error("❗❗️ exception = " + exception);
-        return new ResponseEntity<>(new ResponseDto(exception.getCode(), exception.getMessage(), null), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ResponseDto.error(exception.getCode(), exception.getMessage(), null), HttpStatus.BAD_REQUEST);//return new ResponseEntity<>(ResponseDto.error(exception.getCode(), exception.getMessage(), null), HttpStatus.BAD_REQUEST);
     }
 }
