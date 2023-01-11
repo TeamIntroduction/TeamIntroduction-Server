@@ -25,11 +25,15 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
 
+    private final String REFRESH_TOKEN = "REFRESH_TOKEN";
+    private final String SYMMETRIC_KEY = "SYMMETRIC_KEY";
+
     public TokenResDto login(HttpSession session, LoginReqDto request) throws Exception {
 
         User user = certify(session, request);
 
         TokenResDto tokenResDto = jwtTokenUtil.generateToken(user.getId());
+        session.setAttribute(REFRESH_TOKEN, tokenResDto.getRefreshToken());
         return tokenResDto;
     }
 
@@ -37,7 +41,7 @@ public class UserService {
         User user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new InvalidException(FAIL_LOGIN));
 
-        String symmetricKey = (String) session.getAttribute("SYMMETRIC_KEY");
+        String symmetricKey = (String) session.getAttribute(SYMMETRIC_KEY);
 
         String password = AES.decrypt(symmetricKey, request.getPassword());
         checkPassword(password, user);

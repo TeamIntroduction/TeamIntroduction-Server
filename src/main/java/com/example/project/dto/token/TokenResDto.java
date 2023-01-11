@@ -8,5 +8,5 @@ import lombok.Data;
 public class TokenResDto {
 
     private String accessToken;
-    //private String refreshToken;
+    private String refreshToken;
 }

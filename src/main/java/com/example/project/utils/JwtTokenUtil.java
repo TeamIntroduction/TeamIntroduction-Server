@@ -26,7 +26,10 @@ public class JwtTokenUtil {
     private String JWT_SECRET;
 
     @Value("${jwt.expiration-ms.access-token}")
-    private Long JWT_EXPIRATION_MS;
+    private Long ACCESS_TOKEN_EXPIRATION_MS;
+
+    @Value("${jwt.expiration-ms.refresh-token}")
+    private Long REFRESH_TOKEN_EXPIRATION_MS;
 
     private final static String USER_ID = "userId";
     private final String EXCEPTION = "exception";
@@ -57,37 +60,18 @@ public class JwtTokenUtil {
         String accessToken = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis())) // 발행시간
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS)) // 만료시간
+                .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_MS)) // 만료시간
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
 
-        return new TokenResDto(accessToken);
+        String refreshToken = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis())) // 발행시간
+                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_MS)) // 만료시간
+                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .compact();
 
-//        String authorities = authentication.getAuthorities().stream()
-//                .map(GrantedAuthority::getAuthority)
-//                .collect(Collectors.joining(","));
-
-//        long now = (new Date()).getTime();
-//        // Access Token 생성
-//        Date accessTokenExpiresIn = new Date(now + 86400000);
-//        String accessToken = Jwts.builder()
-//                .setSubject(authentication.getName())
-//                .claim("auth", authorities)
-//                .setExpiration(accessTokenExpiresIn)
-//                .signWith(key, SignatureAlgorithm.HS256)
-//                .compact();
-//
-//        // Refresh Token 생성
-//        String refreshToken = Jwts.builder()
-//                .setExpiration(new Date(now + 86400000))
-//                .signWith(key, SignatureAlgorithm.HS256)
-//                .compact();
-//
-//        return TokenInfo.builder()
-//                .grantType("Bearer")
-//                .accessToken(accessToken)
-//                .refreshToken(refreshToken)
-//                .build();
+        return new TokenResDto(accessToken, refreshToken);
     }
 
     private Key getKey() {

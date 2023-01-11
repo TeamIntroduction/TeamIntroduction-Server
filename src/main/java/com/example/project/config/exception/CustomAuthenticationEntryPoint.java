@@ -22,6 +22,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     private final String EXCEPTION = "exception";
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String TARGET_URL = "http://localhost:3000";
 
     @Override
     public void commence(
@@ -43,8 +44,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setCharacterEncoding("utf-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setHeader("Access-Control-Allow-Credentials", "true");
-        response.setHeader("access-control-allow-origin", "http://localhost:3000");
-
+        response.setHeader("access-control-allow-origin", TARGET_URL);
 
         String body = objectMapper.writeValueAsString(ResponseDto.error(error.getMessage(), error.getCode()));
         response.getWriter().write(body);
