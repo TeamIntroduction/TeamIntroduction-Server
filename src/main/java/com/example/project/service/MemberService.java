@@ -1,9 +1,8 @@
 package com.example.project.service;
 
-import com.example.project.constant.ErrorResponse;
 import com.example.project.dto.member.MemberResDto;
 import com.example.project.dto.member.MemberListResDto;
-import com.example.project.exception.InvalidException;
+import com.example.project.exception.err40x.InvalidException;
 import com.example.project.repository.MemberRepository;
 import com.example.project.utils.key.AES;
 import lombok.RequiredArgsConstructor;

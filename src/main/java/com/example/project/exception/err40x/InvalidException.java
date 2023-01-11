@@ -1,6 +1,7 @@
-package com.example.project.exception;
+package com.example.project.exception.err40x;
 
 import com.example.project.constant.ErrorResponse;
+import com.example.project.exception.CustomException;
 import lombok.Getter;
 
 @Getter

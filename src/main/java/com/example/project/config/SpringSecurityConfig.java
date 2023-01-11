@@ -1,8 +1,9 @@
 package com.example.project.config;
 
+import com.example.project.config.exception.CustomAuthenticationEntryPoint;
 import com.example.project.config.filter.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,6 +23,7 @@ import org.springframework.security.web.firewall.StrictHttpFirewall;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenFilter jwtTokenFilter;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     @Bean
     public BCryptPasswordEncoder encodePassword() {
         return new BCryptPasswordEncoder();
@@ -36,16 +38,21 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/key/**", "/login", "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(
                     jwtTokenFilter,
-                    UsernamePasswordAuthenticationFilter.class);
+                    UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(customAuthenticationEntryPoint);
     }
 
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/key/**", "/login", "/h2-console/**");
-    }
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/key/**", "/login", "/h2-console/**");
+//        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+//    }
 
     @Bean
     public HttpFirewall allowUrlEncodedSlashHttpFirewall() {

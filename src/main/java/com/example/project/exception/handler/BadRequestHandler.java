@@ -1,9 +1,9 @@
 package com.example.project.exception.handler;
 
-import com.example.project.constant.ErrorResponse;
 import com.example.project.dto.ResponseDto;
 import com.example.project.exception.CustomException;
-import com.example.project.exception.InvalidException;
+import com.example.project.exception.err40x.InvalidException;
+import com.example.project.exception.err40x.UnauthorizedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 
@@ -25,14 +25,15 @@ public class BadRequestHandler {
     })
     public ResponseEntity<ResponseDto> handle400Error(Exception exception) {
         log.error("❗❗️ exception = " + exception);
-        return new ResponseEntity<>(ResponseDto.error(BAD_REQUEST, null), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ResponseDto.error(BAD_REQUEST), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({
-            InvalidException.class
+            InvalidException.class,
+            UnauthorizedException.class
     })
-    public ResponseEntity<ResponseDto> handleCustom400Error(CustomException exception) {
+    public ResponseEntity<ResponseDto> handleCustom40xError(CustomException exception) {
         log.error("❗❗️ exception = " + exception);
-        return new ResponseEntity<>(ResponseDto.error(exception.getCode(), exception.getMessage(), null), HttpStatus.BAD_REQUEST);//return new ResponseEntity<>(ResponseDto.error(exception.getCode(), exception.getMessage(), null), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ResponseDto.error(exception.getCode(), exception.getMessage()), HttpStatus.BAD_REQUEST);//return new ResponseEntity<>(ResponseDto.error(exception.getCode(), exception.getMessage(), null), HttpStatus.BAD_REQUEST);
     }
 }

@@ -15,6 +15,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
+import static com.example.project.constant.ErrorResponse.EXPIRED_ACCESS_TOKEN;
+import static com.example.project.constant.ErrorResponse.TOKEN_ERROR;
+
 @Slf4j
 @Component
 public class JwtTokenUtil {
@@ -26,6 +29,7 @@ public class JwtTokenUtil {
     private Long JWT_EXPIRATION_MS;
 
     private final static String USER_ID = "userId";
+    private final String EXCEPTION = "exception";
 
     public Authentication getAuthentication(String token) {
         Long userId = extractClaims(token).get(USER_ID, Long.class);
@@ -102,12 +106,14 @@ public class JwtTokenUtil {
             log.error("Invalid JWT token");
         } catch (ExpiredJwtException ex) {
             log.error("Expired JWT token");
-            //request.setAttribute("exception", EXPIRED_ACCESS_TOKEN.getCode());
+            request.setAttribute(EXCEPTION, EXPIRED_ACCESS_TOKEN);
+            return false;
         } catch (UnsupportedJwtException ex) {
             log.error("Unsupported JWT token");
         } catch (IllegalArgumentException ex) {
             log.error("JWT claims string is empty.");
         }
+        request.setAttribute(EXCEPTION, TOKEN_ERROR);
         return false;
     }
 
