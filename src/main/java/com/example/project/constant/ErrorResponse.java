@@ -18,8 +18,8 @@ public enum ErrorResponse {
     NOT_EXIST_ID("MEMBER001", "멤버 조회 실패"),
 
     // token
-    TOKEN_ERROR("Token001", "토큰 에러"),
-    EXPIRED_ACCESS_TOKEN("Token001", "만료된 Access 토큰입니다"),
+    TOKEN_ERROR("TOKEN001", "토큰 에러"),
+    EXPIRED_ACCESS_TOKEN("TOKEN002", "만료된 Access 토큰입니다"),
     ;
 
     private final ResponseStatus status;

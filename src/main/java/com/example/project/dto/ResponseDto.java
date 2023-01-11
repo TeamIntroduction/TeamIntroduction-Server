@@ -34,7 +34,7 @@ public class ResponseDto<T> {
         return new ResponseDto(errorResponse.getStatus(), errorResponse.getCode(), errorResponse.getMessage());
     }
 
-    public static ResponseDto error(String message, String code) {
-        return new ResponseDto(ResponseStatus.ERROR, message, code);
+    public static ResponseDto error(String code, String message) {
+        return new ResponseDto(ResponseStatus.ERROR, code, message);
     }
 }
