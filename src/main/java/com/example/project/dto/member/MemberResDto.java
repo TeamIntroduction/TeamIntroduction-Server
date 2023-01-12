@@ -2,7 +2,6 @@ package com.example.project.dto.member;
 
 import com.example.project.domain.member.Member;
 import com.example.project.domain.member.Position;
-
 import lombok.Data;
 
 @Data

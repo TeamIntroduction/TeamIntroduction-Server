@@ -2,7 +2,6 @@ package com.example.project.dto;
 
 import com.example.project.constant.ErrorResponse;
 import com.example.project.constant.SuccessResponse;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter

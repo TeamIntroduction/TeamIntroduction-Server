@@ -22,17 +22,14 @@ import static com.example.project.constant.ErrorResponse.TOKEN_ERROR;
 @Component
 public class JwtTokenUtil {
 
-    @Value("${jwt.secret-key}")
-    private String JWT_SECRET;
-
-    @Value("${jwt.expiration-ms.access-token}")
-    private Long ACCESS_TOKEN_EXPIRATION_MS;
-
-    @Value("${jwt.expiration-ms.refresh-token}")
-    private Long REFRESH_TOKEN_EXPIRATION_MS;
-
     private final static String USER_ID = "userId";
     private final String EXCEPTION = "exception";
+    @Value("${jwt.secret-key}")
+    private String JWT_SECRET;
+    @Value("${jwt.expiration-ms.access-token}")
+    private Long ACCESS_TOKEN_EXPIRATION_MS;
+    @Value("${jwt.expiration-ms.refresh-token}")
+    private Long REFRESH_TOKEN_EXPIRATION_MS;
 
     public Authentication getAuthentication(String token) {
         Long userId = extractClaims(token).get(USER_ID, Long.class);
