@@ -2,7 +2,6 @@ package com.example.project.config.filter;
 
 import com.example.project.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -14,20 +13,21 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
+    // 인증에서 제외할 url
+    private static final List<String> EXCLUDE_URL = List.of("/login", "/token/refresh-token", "/h2-console/**");
     private final JwtTokenUtil jwtTokenUtil;
 
     @Override
-    public void doFilterInternal(
-            HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
         // 1. Request Header 에서 JWT 토큰 추출
-        String token = resolveToken(request);
+        String token = extractToken(request);
 
         // 2. validateToken 으로 토큰 유효성 검사
         if (token != null && jwtTokenUtil.validateToken(request, token)) {
@@ -38,7 +38,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
-    private String resolveToken(HttpServletRequest request) {
+    // Filter에서 제외할 URL 설정
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return EXCLUDE_URL.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
+    }
+
+    private String extractToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
             return bearerToken.substring(7);

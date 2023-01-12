@@ -19,6 +19,9 @@ public enum SuccessResponse {
 
     // user
     LOGIN("USER001", "로그인 완료"),
+
+    // token
+    REISSUE_TOKEN("TOKEN001", "토큰 재발행 완료")
     ;
 
     private final ResponseStatus status;
