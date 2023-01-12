@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 
-import static com.example.project.constant.SuccessResponse.GENERATE_ASYMMETRIC_KEY;
+import static com.example.project.constant.SuccessResponse.REISSUE_TOKEN;
 
 @RestController
 @RequiredArgsConstructor()
@@ -25,6 +25,6 @@ public class TokenController {
     @PostMapping("/refresh-token")
     public ResponseEntity<ResponseDto> reissueToken(HttpSession session, @RequestBody ReissueTokenReqDto request) {
 
-        return new ResponseEntity<>(ResponseDto.success(GENERATE_ASYMMETRIC_KEY, tokenService.reissueToken(session, request)), HttpStatus.CREATED);
+        return new ResponseEntity<>(ResponseDto.success(REISSUE_TOKEN, tokenService.reissueToken(session, request)), HttpStatus.CREATED);
     }
 }

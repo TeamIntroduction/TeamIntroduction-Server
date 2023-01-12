@@ -2,6 +2,7 @@ package com.example.project.utils;
 
 import com.example.project.dto.token.TokenResDto;
 import com.example.project.dto.user.UserAuthenticationDto;
+import com.example.project.exception.err40x.UnauthorizedException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
-import static com.example.project.constant.ErrorResponse.EXPIRED_ACCESS_TOKEN;
-import static com.example.project.constant.ErrorResponse.TOKEN_ERROR;
+import static com.example.project.constant.ErrorResponse.*;
 
 @Slf4j
 @Component
@@ -58,14 +58,14 @@ public class JwtTokenUtil {
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis())) // 발행시간
                 .setExpiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_MS)) // 만료시간
-                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .signWith(getKey(), SignatureAlgorithm.HS512)
                 .compact();
 
         String refreshToken = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis())) // 발행시간
                 .setExpiration(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_MS)) // 만료시간
-                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .signWith(getKey(), SignatureAlgorithm.HS512)
                 .compact();
 
         return new TokenResDto(accessToken, refreshToken);
@@ -96,6 +96,25 @@ public class JwtTokenUtil {
         }
         request.setAttribute(EXCEPTION, TOKEN_ERROR);
         return false;
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(getKey()).parseClaimsJws(token);
+            return true;
+        } catch (SignatureException ex) {
+            log.error("Invalid JWT signature");
+        } catch (MalformedJwtException ex) {
+            log.error("Invalid JWT token");
+        } catch (ExpiredJwtException ex) {
+            log.error("Expired JWT token");
+            throw new UnauthorizedException(EXPIRED_REFRESH_TOKEN);
+        } catch (UnsupportedJwtException ex) {
+            log.error("Unsupported JWT token");
+        } catch (IllegalArgumentException ex) {
+            log.error("JWT claims string is empty.");
+        }
+        throw new UnauthorizedException(TOKEN_ERROR);
     }
 
 }

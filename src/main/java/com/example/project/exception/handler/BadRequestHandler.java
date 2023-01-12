@@ -29,10 +29,17 @@ public class BadRequestHandler {
 
     @ExceptionHandler({
             InvalidException.class,
-            UnauthorizedException.class
     })
-    public ResponseEntity<ResponseDto> handleCustom40xError(CustomException exception) {
+    public ResponseEntity<ResponseDto> handleCustom400Error(CustomException exception) {
         log.error("❗❗️ exception = " + exception);
         return new ResponseEntity<>(ResponseDto.error(exception.getCode(), exception.getMessage()), HttpStatus.BAD_REQUEST);//return new ResponseEntity<>(ResponseDto.error(exception.getCode(), exception.getMessage(), null), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({
+            UnauthorizedException.class
+    })
+    public ResponseEntity<ResponseDto> handleCustom40x3rror(CustomException exception) {
+        log.error("❗❗️ exception = " + exception);
+        return new ResponseEntity<>(ResponseDto.error(exception.getCode(), exception.getMessage()), HttpStatus.UNAUTHORIZED);//return new ResponseEntity<>(ResponseDto.error(exception.getCode(), exception.getMessage(), null), HttpStatus.BAD_REQUEST);
     }
 }
