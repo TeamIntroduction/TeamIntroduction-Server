@@ -16,6 +16,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
+import static com.example.project.config.filter.ExcludeAuthenticationUrl.*;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -33,10 +35,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable() // rest api 만을 고려하여 기본 설정 해제
                 .csrf().disable() // csrf 보안 토큰 disable처리
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 역시 사용하지 않습니다.
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 X
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/key/**", "/login", "/h2-console/**", "/token/**").permitAll()
+                    .antMatchers(
+                            KEYS.getUrl(), Login.getUrl(), TOKEN.getUrl(), H2.getUrl()).permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .exceptionHandling()
