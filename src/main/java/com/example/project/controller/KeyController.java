@@ -18,21 +18,21 @@ import static com.example.project.constant.SuccessResponse.STORE_SYMMETRIC_KEY;
 
 @RestController
 @RequiredArgsConstructor()
-@RequestMapping("/key")
+@RequestMapping("/ks")
 public class KeyController {
 
     private final KeyService keyService;
 
-    @PostMapping("/asymmetric-key")
+    @PostMapping("/a-k")
     public ResponseEntity<ResponseDto> generateKey(HttpSession session) throws Exception {
 
         return new ResponseEntity<>(ResponseDto.success(GENERATE_ASYMMETRIC_KEY, keyService.generateKey(session)), HttpStatus.CREATED);
     }
 
-    @PostMapping("/symmetric-key")
-    public ResponseEntity<ResponseDto> storeSymmetricKey(HttpSession session, @RequestBody SymmetricKeyReqDto symmetricKeyReqDto) throws Exception {
+    @PostMapping("/s-k")
+    public ResponseEntity<ResponseDto> storeSymmetricKey(HttpSession session, @RequestBody SymmetricKeyReqDto request) throws Exception {
 
-        keyService.storeSymmetricKey(session, symmetricKeyReqDto);
+        keyService.storeSymmetricKey(session, request);
         return new ResponseEntity<>(ResponseDto.success(STORE_SYMMETRIC_KEY, null), HttpStatus.CREATED);
     }
 }

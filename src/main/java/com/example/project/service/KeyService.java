@@ -39,9 +39,9 @@ public class KeyService {
         return map;
     }
 
-    public void storeSymmetricKey(HttpSession session, SymmetricKeyReqDto symmetricKeyReqDto) throws Exception {
+    public void storeSymmetricKey(HttpSession session, SymmetricKeyReqDto request) throws Exception {
 
-        String symmetricKey = RSA.decrypt(symmetricKeyReqDto.getSymmetricKey(), (PrivateKey)session.getAttribute(PRIVATE_KEY));
+        String symmetricKey = RSA.decrypt(request.getSK(), (PrivateKey)session.getAttribute(PRIVATE_KEY));
         session.setAttribute(SYMMETRIC_KEY, symmetricKey);
     }
 }
