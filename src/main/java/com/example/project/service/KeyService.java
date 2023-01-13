@@ -41,7 +41,7 @@ public class KeyService {
 
     public void storeSymmetricKey(HttpSession session, SymmetricKeyReqDto request) throws Exception {
 
-        String symmetricKey = RSA.decrypt(request.getSK(), (PrivateKey)session.getAttribute(PRIVATE_KEY));
+        String symmetricKey = RSA.decrypt(request.getSymmetricKey(), (PrivateKey)session.getAttribute(PRIVATE_KEY));
         session.setAttribute(SYMMETRIC_KEY, symmetricKey);
     }
 }

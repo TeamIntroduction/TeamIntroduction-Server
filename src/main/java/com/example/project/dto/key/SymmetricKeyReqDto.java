@@ -7,5 +7,5 @@ import lombok.Data;
 public class SymmetricKeyReqDto {
 
     @JsonProperty("sK")
-    private String sK;
+    private String symmetricKey;
 }
