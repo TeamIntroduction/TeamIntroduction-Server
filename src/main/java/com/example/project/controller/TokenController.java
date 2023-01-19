@@ -17,7 +17,7 @@ import static com.example.project.constant.SuccessResponse.REISSUE_TOKEN;
 
 @RestController
 @RequiredArgsConstructor()
-@RequestMapping("/token")
+@RequestMapping("/api/token")
 public class TokenController {
 
     private final TokenService tokenService;

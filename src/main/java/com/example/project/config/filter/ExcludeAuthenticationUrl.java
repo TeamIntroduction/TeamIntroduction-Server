@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ExcludeAuthenticationUrl {
 
-    KEYS("/ks/**"), Login("/login"), TOKEN("/token/refresh-token"), H2("/h2-console/**");
+    KEYS("/api/ks/**"), LOGIN("/api/login"), TOKEN("/api/token/refresh-token"), H2("/api/h2-console/**");
 
     private final String url;
 

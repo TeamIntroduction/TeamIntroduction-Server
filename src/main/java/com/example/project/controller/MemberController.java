@@ -14,7 +14,7 @@ import static com.example.project.constant.SuccessResponse.GET_MEMBER_LIST;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/members")
+@RequestMapping("/api/members")
 public class MemberController {
 
     private final MemberService memberService;

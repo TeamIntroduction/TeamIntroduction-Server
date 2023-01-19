@@ -13,7 +13,7 @@ import static com.example.project.constant.SuccessResponse.GET_TEAMS;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/teams")
+@RequestMapping("/api/teams")
 public class TeamController {
 
     private final TeamService teamService;

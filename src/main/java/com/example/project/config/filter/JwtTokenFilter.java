@@ -25,8 +25,7 @@ import static com.example.project.config.filter.ExcludeAuthenticationUrl.*;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     // 인증에서 제외할 url
-
-    private static final List<String> EXCLUDE_URL = Collections.unmodifiableList(Arrays.asList(KEYS.getUrl(), Login.getUrl(), TOKEN.getUrl(), H2.getUrl()));
+    private static final List<String> EXCLUDE_URL = Collections.unmodifiableList(Arrays.asList(KEYS.getUrl(), LOGIN.getUrl(), TOKEN.getUrl(), H2.getUrl()));
     private final JwtTokenUtil jwtTokenUtil;
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
 

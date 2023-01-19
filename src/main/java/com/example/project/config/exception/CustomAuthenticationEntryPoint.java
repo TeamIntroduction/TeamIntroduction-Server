@@ -3,6 +3,7 @@ package com.example.project.config.exception;
 import com.example.project.constant.ErrorResponse;
 import com.example.project.dto.ResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.io.IOException;
 
 import static com.example.project.constant.ErrorResponse.TOKEN_ERROR;
 
+@Slf4j
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
@@ -28,6 +30,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         ErrorResponse exception = (ErrorResponse) request.getAttribute(EXCEPTION);
         if (null != exception) {
+            log.error("❗❗️ exception = " + exception.getMessage());
             setResponse(response, exception);
             return;
         }

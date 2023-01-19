@@ -39,7 +39,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .authorizeRequests()
                     .antMatchers(
-                            KEYS.getUrl(), Login.getUrl(), TOKEN.getUrl(), H2.getUrl()).permitAll()
+                            KEYS.getUrl(), LOGIN.getUrl(), TOKEN.getUrl(), H2.getUrl()).permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .exceptionHandling()

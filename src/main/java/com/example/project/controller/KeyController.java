@@ -18,7 +18,7 @@ import static com.example.project.constant.SuccessResponse.STORE_SYMMETRIC_KEY;
 
 @RestController
 @RequiredArgsConstructor()
-@RequestMapping("/ks")
+@RequestMapping("/api/ks")
 public class KeyController {
 
     private final KeyService keyService;
