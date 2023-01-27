@@ -22,15 +22,15 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public List<MemberListResDto> getMemberList(HttpSession session, String encryptedTeamId) throws Exception {
+    public List<MemberListResDto> getMemberList(Long teamId) throws Exception {
 
-        String symmetricKey = (String)session.getAttribute("SYMMETRIC_KEY");
-        Long teamId = Long.parseLong(AES.decrypt(symmetricKey, encryptedTeamId));
+        //String symmetricKey = (String)session.getAttribute("SYMMETRIC_KEY");
+        //Long teamId = Long.parseLong(AES.decrypt(symmetricKey, encryptedTeamId));
 
         return memberRepository.findByTeamId(teamId).stream()
                 .map(m -> {
                     try {
-                        return new MemberListResDto(symmetricKey, m);
+                        return new MemberListResDto(m);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

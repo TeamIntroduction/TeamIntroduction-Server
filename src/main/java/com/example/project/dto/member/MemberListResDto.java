@@ -11,8 +11,9 @@ public class MemberListResDto {
     private String name;
     private Position position;
 
-    public MemberListResDto(String key, Member member) throws Exception {
-        this.id = AES.encrypt(key, member.getId().toString());
+    public MemberListResDto(Member member) throws Exception {
+        //this.id = AES.encrypt(key, member.getId().toString());
+        //this.id = member.getId();
         this.name = member.getName();
         this.position = member.getPosition();
     }

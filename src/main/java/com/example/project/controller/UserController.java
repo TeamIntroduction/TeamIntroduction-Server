@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import static com.example.project.constant.SuccessResponse.LOGIN;
@@ -23,7 +24,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDto> login(HttpSession session, @RequestBody LoginReqDto request) throws Exception {
+    public ResponseEntity<ResponseDto> login(HttpServletRequest re, HttpSession session, @RequestBody LoginReqDto request) throws Exception {
 
         return new ResponseEntity<>(ResponseDto.success(LOGIN, userService.login(session, request)), HttpStatus.OK);
     }
