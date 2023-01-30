@@ -1,4 +1,4 @@
-package com.example.project.config.annotation;
+package com.example.project.controller.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DecRequestParam {
+public @interface DecPathVariable {
 }

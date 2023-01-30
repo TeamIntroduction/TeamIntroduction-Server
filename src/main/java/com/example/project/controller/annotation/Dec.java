@@ -1,11 +1,12 @@
-package com.example.project.config.annotation;
+package com.example.project.controller.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.PARAMETER})
+//@Target({ElementType.PARAMETER, ElementType.FIELD})
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface JsonEnc {
+public @interface Dec {
 }
