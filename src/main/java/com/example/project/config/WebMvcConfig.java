@@ -1,7 +1,7 @@
 package com.example.project.config;
 
 import com.example.project.config.interceptor.Interceptor;
-import com.example.project.config.resolver.AesArgumentResolver;
+import com.example.project.controller.resolver.AesArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;

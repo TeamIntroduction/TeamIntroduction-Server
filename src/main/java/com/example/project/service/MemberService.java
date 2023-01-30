@@ -1,15 +1,14 @@
 package com.example.project.service;
 
+import com.example.project.config.key.Aes;
 import com.example.project.dto.member.MemberListResDto;
 import com.example.project.dto.member.MemberResDto;
 import com.example.project.exception.err40x.InvalidException;
 import com.example.project.repository.MemberRepository;
-import com.example.project.utils.key.AES;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,17 +19,16 @@ import static com.example.project.constant.ErrorResponse.NOT_EXIST_ID;
 @RequiredArgsConstructor
 public class MemberService {
 
+    private final Aes aes;
     private final MemberRepository memberRepository;
 
-    public List<MemberListResDto> getMemberList(Long teamId) throws Exception {
 
-        //String symmetricKey = (String)session.getAttribute("SYMMETRIC_KEY");
-        //Long teamId = Long.parseLong(AES.decrypt(symmetricKey, encryptedTeamId));
+    public List<MemberListResDto> getMemberList(String teamId) {
 
-        return memberRepository.findByTeamId(teamId).stream()
+        return memberRepository.findByTeamId(Long.parseLong(teamId)).stream()
                 .map(m -> {
                     try {
-                        return new MemberListResDto(m);
+                        return new MemberListResDto(m, aes);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -38,13 +36,11 @@ public class MemberService {
                 .collect(Collectors.toList());
     }
 
-    public String getMember(HttpSession session, String encryptedMemberId) throws Exception {
+    public String getMember(String memberId) throws Exception {
 
-        String symmetricKey = (String)session.getAttribute("SYMMETRIC_KEY");
-        Long memberId = Long.parseLong(AES.decrypt(symmetricKey, encryptedMemberId));
-        MemberResDto memberResDto = new MemberResDto(memberRepository.findById(memberId)
+        MemberResDto memberResDto = new MemberResDto(memberRepository.findById(Long.parseLong(memberId))
                 .orElseThrow(() -> new InvalidException(NOT_EXIST_ID)));
 
-        return AES.encryptObject(symmetricKey, memberResDto);
+        return aes.encryptObject(memberResDto);
     }
 }

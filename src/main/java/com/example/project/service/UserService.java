@@ -1,12 +1,12 @@
 package com.example.project.service;
 
+import com.example.project.config.key.Aes;
 import com.example.project.domain.user.User;
 import com.example.project.dto.LoginReqDto;
 import com.example.project.dto.token.TokenResDto;
 import com.example.project.exception.err40x.InvalidException;
 import com.example.project.repository.UserRepository;
 import com.example.project.utils.JwtTokenUtil;
-import com.example.project.utils.key.AES;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,8 @@ import static com.example.project.constant.ErrorResponse.FAIL_LOGIN;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserService {
+
+    private final Aes aes;
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -43,7 +45,7 @@ public class UserService {
 
         String symmetricKey = (String) session.getAttribute(SYMMETRIC_KEY);
 
-        String password = AES.decrypt(symmetricKey, request.getPassword());
+        String password = aes.decrypt(request.getPassword());
         checkPassword(password, user);
         return user;
     }

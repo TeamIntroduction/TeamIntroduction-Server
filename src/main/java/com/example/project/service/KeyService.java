@@ -1,7 +1,7 @@
 package com.example.project.service;
 
+import com.example.project.config.key.Rsa;
 import com.example.project.dto.key.SymmetricKeyReqDto;
-import com.example.project.utils.key.RSA;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +22,7 @@ public class KeyService {
 
     private final static String PRIVATE_KEY = "PRIVATE_KEY";
     private final static String SYMMETRIC_KEY = "SYMMETRIC_KEY";
+    private final Rsa rsa;
 
     private static HashMap<String, String> createSendingFormatOfPublicKey(PublicKey publicKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
@@ -33,7 +34,7 @@ public class KeyService {
 
     public HashMap<String, String> generateKey(HttpSession session) throws Exception {
 
-        KeyPair keyPair = RSA.generateKey();
+        KeyPair keyPair = rsa.generateKey();
         session.setAttribute(PRIVATE_KEY, keyPair.getPrivate());
         HashMap<String, String> map = createSendingFormatOfPublicKey(keyPair.getPublic());
         return map;
@@ -41,7 +42,7 @@ public class KeyService {
 
     public void storeSymmetricKey(HttpSession session, SymmetricKeyReqDto request) throws Exception {
 
-        String symmetricKey = RSA.decrypt(request.getSymmetricKey(), (PrivateKey)session.getAttribute(PRIVATE_KEY));
+        String symmetricKey = rsa.decrypt(request.getSymmetricKey(), (PrivateKey)session.getAttribute(PRIVATE_KEY));
         session.setAttribute(SYMMETRIC_KEY, symmetricKey);
     }
 }

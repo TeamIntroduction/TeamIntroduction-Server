@@ -1,8 +1,10 @@
-package com.example.project.utils.key;
+package com.example.project.config.key;
 
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
+import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -10,19 +12,21 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Base64;
 
-@NoArgsConstructor
-public class RSA {
+@RequiredArgsConstructor
+@Component
+public class Rsa {
 
-    private static final int KEY_SIZE = 2048;
-    private static final String ALG = "RSA";
+    private final int KEY_SIZE = 2048;
+    private final String ALG = "RSA";
+    private final HttpSession httpSession;
 
-    public static KeyPair generateKey() throws Exception {
+    public KeyPair generateKey() throws Exception {
         KeyPairGenerator generator = KeyPairGenerator.getInstance(ALG);
         generator.initialize(KEY_SIZE);
         return generator.genKeyPair();
     }
 
-    public static String encrypt(String message, PublicKey publicKey) throws Exception {
+    public String encrypt(String message, PublicKey publicKey) throws Exception {
         byte[] messageToBytes = message.getBytes();
         Cipher cipher = Cipher.getInstance(ALG);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
@@ -30,11 +34,11 @@ public class RSA {
         return encode(encryptedBytes);
     }
 
-    private static String encode(byte[] data) {
+    private String encode(byte[] data) {
         return Base64.getEncoder().encodeToString(data);
     }
 
-    public static String decrypt(String encryptedMessage, PrivateKey privateKey) throws Exception {
+    public String decrypt(String encryptedMessage, PrivateKey privateKey) throws Exception {
         byte[] encryptedBytes = decode(encryptedMessage);
         Cipher cipher = Cipher.getInstance(ALG);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
@@ -42,7 +46,7 @@ public class RSA {
         return new String(decryptedMessage, StandardCharsets.UTF_8);
     }
 
-    private static byte[] decode(String data) {
+    private byte[] decode(String data) {
         return Base64.getDecoder().decode(data);
     }
 }
