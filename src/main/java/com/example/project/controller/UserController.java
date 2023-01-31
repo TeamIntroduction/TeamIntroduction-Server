@@ -1,5 +1,6 @@
 package com.example.project.controller;
 
+import com.example.project.controller.annotation.DecRequestBody;
 import com.example.project.dto.LoginReqDto;
 import com.example.project.dto.ResponseDto;
 import com.example.project.service.UserService;
@@ -24,7 +25,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDto> login(HttpServletRequest re, HttpSession session, @RequestBody LoginReqDto request) throws Exception {
+    public ResponseEntity<ResponseDto> login(HttpSession session, @DecRequestBody LoginReqDto request) throws Exception {
 
         return new ResponseEntity<>(ResponseDto.success(LOGIN, userService.login(session, request)), HttpStatus.OK);
     }
