@@ -26,21 +26,15 @@ public class MemberService {
     public List<MemberListResDto> getMemberList(String teamId) {
 
         return memberRepository.findByTeamId(Long.parseLong(teamId)).stream()
-                .map(m -> {
-                    try {
-                        return new MemberListResDto(m, aes);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                })
+                .map(m -> new MemberListResDto(m))
                 .collect(Collectors.toList());
     }
 
-    public String getMember(String memberId) throws Exception {
+    public MemberResDto getMember(String memberId) throws Exception {
 
         MemberResDto memberResDto = new MemberResDto(memberRepository.findById(Long.parseLong(memberId))
                 .orElseThrow(() -> new InvalidException(NOT_EXIST_ID)));
 
-        return aes.encryptObject(memberResDto);
+        return memberResDto;
     }
 }

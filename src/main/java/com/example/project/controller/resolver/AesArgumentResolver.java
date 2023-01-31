@@ -102,8 +102,8 @@ public class AesArgumentResolver implements HandlerMethodArgumentResolver {
 
         Object object = getObjectOfBody(webRequest, type);
 
-        Field[] Fields = object.getClass().getDeclaredFields();
-        for (Field field : Fields) {
+        Field[] fields = object.getClass().getDeclaredFields();
+        for (Field field : fields) {
             field.setAccessible(true);  // private로 선언되어 있더라도 접근 가능 하도록
             if (hasDecAnnotation(field)) {
                 setDecryptedValue(object, field);

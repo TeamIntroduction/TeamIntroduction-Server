@@ -2,6 +2,7 @@ package com.example.project.controller;
 
 import com.example.project.controller.annotation.DecPathVariable;
 import com.example.project.controller.annotation.DecRequestParam;
+import com.example.project.controller.annotation.EncResponseBody;
 import com.example.project.dto.ResponseDto;
 import com.example.project.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +22,14 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    @EncResponseBody
     @GetMapping()
     public ResponseEntity<ResponseDto> getMemberList(@DecRequestParam String teamId) {
 
         return new ResponseEntity<>(ResponseDto.success(GET_MEMBER_LIST, memberService.getMemberList(teamId)), HttpStatus.OK);
     }
 
+    @EncResponseBody
     @GetMapping("/{encryptedMemberId}")
     public ResponseEntity<ResponseDto> getMember(@DecPathVariable(name="encryptedMemberId") String memberId) throws Exception {
 
