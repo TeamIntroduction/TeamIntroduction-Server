@@ -26,14 +26,14 @@ public class Team {
     private Type type;
 
     @OneToMany(mappedBy = "team")
-    private List<Member> members = new ArrayList<>();
+    private final List<Member> members = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Team parent;
 
     @OneToMany(mappedBy = "parent")
-    private List<Team> children = new ArrayList<>();
+    private final List<Team> children = new ArrayList<>();
 
     /* 연관관계 메소드 */
     public void addParent(Team parent) {

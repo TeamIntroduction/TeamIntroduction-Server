@@ -1,7 +1,6 @@
 package com.example.project.controller.annotation;
 
 import org.springframework.core.annotation.AliasFor;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
